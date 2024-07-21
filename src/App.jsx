@@ -1,35 +1,38 @@
-import React from "react";
-import Header from "./Header";
-import Content from "./Content";
-import Total from "./Total";
+import React from 'react';
+import { useState } from 'react';
+import Button from "./Button.jsx";
+import Result from "./Result";
 
-function App() {
+const App = () => {
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+  const handleBadclick = () => {
+    setBad(bad + 1)
   }
+  const handleGoodclick = () => {
+    setGood(good + 1)
+  }
+  const handleNeutralclick = () => {
+    setNeutral(neutral + 1)
+  }
+
+  const feedback_given = good > 0 || bad > 0 || neutral > 0;
+
 
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total total={course.parts} />
+      <h1>Give feedback</h1>
+      <Button onClick={handleGoodclick} text="good" />
+      <Button onClick={handleNeutralclick} text="neutral" />
+      <Button onClick={handleBadclick} text="bad" />
+      <h1>statistics</h1>
+      {feedback_given ? (<Result result={[{ button: "good", clicks: good }, { button: "neutral", clicks: neutral }, { button: "bad", clicks: bad }]} />) :
+        (<p>no feedback given</p>)}
     </div>
-  );
+  )
 }
 
 export default App;
